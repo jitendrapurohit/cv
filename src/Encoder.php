@@ -45,6 +45,7 @@ class Encoder {
       'json-strict',
       'serialize',
       'shell',
+      'unix',
     );
   }
 
@@ -59,7 +60,11 @@ class Encoder {
       case 'php':
         return var_export($data, 1);
 
+      case 'unix':
       case 'json-pretty':
+        if ($format == 'unix' && isset($data['is_error']) && $data['is_error'] == 0) {
+          return NULL;
+        }
         $jsonOptions = (defined('JSON_PRETTY_PRINT') ? JSON_PRETTY_PRINT : 0)
           |
           (defined('JSON_UNESCAPED_SLASHES') ? JSON_UNESCAPED_SLASHES : 0);
